@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aaron O'Brien — bioinformatics software engineer</title>
-<meta name="description" content="Aaron O'Brien builds Rust tooling for long-read rRNA metabarcoding, ITSxRust, EMITS and SSUplex, at the Centro de Biotecnología de Sistemas, Universidad Andrés Bello, Santiago.">
-<meta property="og:title" content="Aaron O'Brien: bioinformatics software engineer">
-<meta property="og:description" content="Rust tooling for long-read rRNA metabarcoding. ITSxRust, EMITS, SSUplex.">
+<title>Aaron O'Brien: bioinformatics for microbial ecology</title>
+<meta name="description" content="Aaron O'Brien is a bioinformatician in Santiago, Chile, who helps biologists find out which fungi and microbes are in their samples, how much of each, and which ones nobody has named yet. Author of ITSxRust, EMITS and SSUplex.">
+<meta property="og:title" content="Aaron O'Brien: bioinformatics for microbial ecology">
+<meta property="og:description" content="Helping biologists find out which fungi and microbes are in their samples, how much of each, and which ones nobody has named yet.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +20,7 @@
   --glow:rgba(242,166,90,.16); --tex:rgba(255,255,255,.16);
   --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   --sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --track:#122C35;
   --rail-w:150px;
   --ease:cubic-bezier(.2,.7,.3,1);
 }
@@ -28,6 +29,7 @@
   --ink:#0C2028; --muted:#4E6C74; --steel:#8AA1A7;
   --accent:#AE5F16; --accent-2:#0E7668; --accent-ink:#FFFFFF;
   --glow:rgba(174,95,22,.12); --tex:rgba(0,0,0,.16);
+  --track:#E3EBEB;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -49,7 +51,7 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible{
 .shell{max-width:820px; margin:0 auto; padding:0 28px}
 main section{padding:76px 0; border-top:1px solid var(--rule)}
 main section:first-child{border-top:0; padding-top:40px}
-.s-head{display:flex; align-items:baseline; gap:14px; margin-bottom:34px}
+.s-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 14px; margin-bottom:34px}
 .s-head h2{font-size:1.45rem}
 .s-head .count{font-family:var(--mono); font-size:.72rem; color:var(--steel)}
 
@@ -94,26 +96,46 @@ main section:first-child{border-top:0; padding-top:40px}
 .theme:hover{color:var(--ink); border-color:var(--steel)}
 
 /* hero -------------------------------------------------------------------- */
+.hello{display:grid; grid-template-columns:168px 1fr; gap:38px; align-items:center}
+.portrait{position:relative; width:168px; height:168px; margin:10px}
+.portrait img{display:block; width:100%; height:100%; border-radius:50%; object-fit:cover}
+.portrait::after{
+  content:""; position:absolute; inset:-10px; border-radius:50%;
+  border:1px solid var(--rule); pointer-events:none;
+}
 .hero h1{
-  font-size:clamp(2.7rem,8vw,4.3rem); font-weight:700; letter-spacing:-.035em;
-  margin-bottom:18px;
+  font-size:clamp(2.6rem,6.2vw,3.9rem); font-weight:700; letter-spacing:-.035em;
+  margin-bottom:16px;
 }
-.hero .lede{font-size:1.12rem; color:var(--muted); max-width:56ch}
+.hero .lede{font-size:1.12rem; color:var(--muted); max-width:54ch; margin:0 0 .6em}
 .hero .lede b{color:var(--ink); font-weight:500}
-.meta{
-  display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:22px;
-  font-family:var(--mono); font-size:.76rem; color:var(--steel);
+.actions{display:flex; align-items:center; flex-wrap:wrap; gap:10px 14px; margin-top:20px; font-size:.92rem; color:var(--steel)}
+.btn{
+  display:inline-block; padding:9px 18px; border-radius:4px; text-decoration:none;
+  background:var(--accent); color:var(--accent-ink); font-weight:600; font-size:.95rem;
 }
-.meta span{display:inline-flex; align-items:center; gap:7px}
-.meta i{width:5px; height:5px; background:var(--accent-2); border-radius:50%; font-style:normal}
+.btn:hover{filter:brightness(1.07)}
 
-/* read explorer ----------------------------------------------------------- */
-.explorer{margin-top:48px; background:var(--bg-2); border:1px solid var(--rule); border-radius:5px}
-.explorer .bar{
+.helps{margin-top:84px}
+.asks{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin-top:26px; border-top:1px solid var(--rule)}
+.ask{padding:22px 26px 22px 0; border-bottom:1px solid var(--rule)}
+.ask:nth-child(even){padding:22px 0 22px 26px; border-left:1px solid var(--rule)}
+.ask h3{font-size:1.1rem; font-weight:600; letter-spacing:-.01em; line-height:1.3}
+.ask p{margin:8px 0 0; font-size:.94rem; color:var(--muted)}
+.ask .via{display:flex; flex-wrap:wrap; gap:4px 14px; margin-top:12px; font-family:var(--mono); font-size:.72rem}
+.ask .via a{color:var(--accent-2); text-decoration:none; border-bottom:1px solid transparent}
+.ask .via a:hover{border-bottom-color:var(--accent-2)}
+.outro{margin:24px 0 0; max-width:62ch; font-size:.96rem; color:var(--muted)}
+
+/* read explorer and figures ----------------------------------------------- */
+.explorer, .figure{background:var(--bg-2); border:1px solid var(--rule); border-radius:5px}
+.tool .explorer{margin-top:20px}
+.explorer .hint{margin-left:auto; font-family:var(--mono); font-size:.66rem; color:var(--steel)}
+.explorer .bar, .figure .bar{
   display:flex; align-items:center; gap:10px; flex-wrap:wrap;
   padding:12px 16px; border-bottom:1px solid var(--rule);
 }
-.explorer .bar .lbl{font-family:var(--mono); font-size:.7rem; color:var(--steel); margin-right:2px}
+.explorer .bar .lbl, .figure .bar .lbl{font-family:var(--mono); font-size:.7rem; color:var(--steel); margin-right:2px}
 .preset{
   font-family:var(--mono); font-size:.74rem; padding:5px 10px; cursor:pointer;
   background:none; color:var(--muted); border:1px solid var(--rule); border-radius:3px;
@@ -150,10 +172,10 @@ svg.read{display:block; width:100%; height:auto; overflow:visible}
 .tool .name{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
 .tool .name h3{font-family:var(--mono); font-size:1.02rem; font-weight:500; color:var(--accent)}
 .tool .role{font-family:var(--mono); font-size:.7rem; color:var(--steel)}
-.tool p{margin:9px 0 0; color:var(--muted); max-width:62ch; font-size:.96rem}
+.tool > p{margin:9px 0 0; color:var(--muted); max-width:62ch; font-size:.96rem}
 .tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px}
 .tag{font-family:var(--mono); font-size:.68rem; color:var(--muted); border:1px solid var(--rule); padding:3px 7px; border-radius:2px}
-.links{display:flex; gap:16px; margin-top:12px; font-family:var(--mono); font-size:.74rem}
+.links{display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:12px; font-family:var(--mono); font-size:.74rem}
 .links a{color:var(--accent-2); text-decoration:none; border-bottom:1px solid transparent}
 .links a:hover{border-bottom-color:var(--accent-2)}
 .stats{margin-top:16px; display:grid; gap:7px; max-width:430px}
@@ -163,8 +185,72 @@ svg.read{display:block; width:100%; height:auto; overflow:visible}
 .stat .fill{display:block; height:100%; width:0; background:var(--steel); border-radius:2px; transition:width .9s var(--ease)}
 .stat.mine .who{color:var(--ink)}
 .stat.mine .fill{background:var(--accent)}
-.stat .val{color:var(--muted); text-align:right}
-.stats-note{font-family:var(--mono); font-size:.68rem; color:var(--steel); margin-top:8px}
+.stat .val{color:var(--muted); text-align:right; font-variant-numeric:tabular-nums}
+.stats-note, .tool .stats-note{font-family:var(--mono); font-size:.68rem; color:var(--steel); margin-top:8px}
+
+/* research ---------------------------------------------------------------- */
+.intro{color:var(--muted); max-width:62ch; margin:0}
+.intro.lead-in{margin:0 0 28px}
+.rstudy{padding:38px 0; border-bottom:1px solid var(--rule)}
+.rstudy:last-of-type{border-bottom:0; padding-bottom:0}
+.venue{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px;
+  font-family:var(--mono); font-size:.72rem; color:var(--steel);
+}
+.rstudy h3{font-size:1.24rem; font-weight:600; letter-spacing:-.015em; line-height:1.25; max-width:34ch}
+.rstudy .with{margin:8px 0 0; font-size:.86rem; color:var(--steel)}
+.rstudy .plain{margin:14px 0 0; max-width:60ch; font-size:1.04rem; line-height:1.55; color:var(--ink)}
+.rstudy .body{margin:14px 0 0; max-width:62ch; font-size:.96rem; color:var(--muted)}
+.rstudy .body b{color:var(--ink); font-weight:500}
+.rstudy .figure{margin-top:22px}
+.rstudy .links{margin-top:16px}
+
+.key{margin-left:auto; display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:.66rem; color:var(--steel)}
+.key i{display:inline-block; width:9px; height:9px; border-radius:2px; margin-left:8px}
+.key i:first-child{margin-left:0}
+.key .base, .stat.base .fill{background:var(--accent-2)}
+.key .dl, .stat.dl .fill{background:var(--accent)}
+.plot{padding:18px 16px 14px}
+.plot .stats{margin-top:0; max-width:none; gap:10px}
+.plot .stat{grid-template-columns:96px 1fr 52px 50px}
+.plot .stat .meter{background:var(--track)}
+.stat .d{color:var(--steel); text-align:right; font-variant-numeric:tabular-nums}
+.fig-note{margin:0; padding:0 16px 12px; max-width:68ch; font-size:.9rem; color:var(--muted)}
+.fig-note b{color:var(--ink); font-weight:500}
+.swap{display:grid; padding:0 16px 12px}
+.swap > .fig-note{grid-area:1 / 1; padding:0}
+.swap > [aria-hidden="true"]{visibility:hidden}
+
+.ranges{display:grid; gap:10px; padding:18px 16px 12px}
+.rng{display:grid; grid-template-columns:112px 1fr 84px; align-items:center; gap:10px; font-family:var(--mono); font-size:.7rem}
+.rng .who{color:var(--muted); line-height:1.25}
+.rng .track{position:relative; height:9px; background:var(--track); border-radius:2px}
+.rng .span{position:absolute; top:0; bottom:0; width:0; background:var(--accent); border-radius:2px; transition:width .9s var(--ease)}
+.rng .span.id{background:var(--accent-2)}
+.rng .val{color:var(--muted); text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.rng.scale{font-size:.62rem; color:var(--steel)}
+.rng .ticks{position:relative; height:1.3em}
+.rng .ticks span{position:absolute; top:0}
+.rng .ticks span:nth-child(2){left:50%; transform:translateX(-50%)}
+.rng .ticks span:last-child{right:0}
+
+.checks{margin:14px 0 0; display:grid; gap:12px; max-width:66ch}
+.checks div{display:grid; grid-template-columns:172px 1fr; gap:14px; padding-top:12px; border-top:1px solid var(--rule)}
+.checks div:first-child{border-top:0; padding-top:0}
+.checks dt{font-family:var(--mono); font-size:.72rem; color:var(--accent-2); padding-top:3px}
+.checks dd{margin:0; font-size:.92rem; line-height:1.55; color:var(--muted)}
+.checks dd b{color:var(--ink); font-weight:500}
+
+.flow{
+  list-style:none; margin:22px 0 0; padding:0; counter-reset:step;
+  display:grid; grid-template-columns:repeat(3,1fr);
+  background:var(--bg-2); border:1px solid var(--rule); border-radius:5px;
+}
+.flow li{padding:14px 16px 16px; border-left:1px solid var(--rule); counter-increment:step}
+.flow li:first-child{border-left:0}
+.flow .step{display:flex; align-items:baseline; gap:8px; font-family:var(--mono); font-size:.76rem; color:var(--accent-2)}
+.flow .step::before{content:counter(step); font-size:.68rem; color:var(--steel)}
+.flow p{margin:6px 0 0; font-size:.88rem; line-height:1.5; color:var(--muted)}
 
 /* career ------------------------------------------------------------------ */
 .axis{position:relative; height:20px; font-family:var(--mono); font-size:.68rem; color:var(--steel); border-bottom:1px solid var(--rule); margin-bottom:4px}
@@ -196,7 +282,9 @@ svg.read{display:block; width:100%; height:auto; overflow:visible}
   font-family:var(--mono); font-size:.72rem; padding:5px 10px; cursor:pointer;
   background:none; color:var(--muted); border:1px solid var(--rule); border-radius:3px;
 }
+.filters button .n{color:var(--steel)}
 .filters button[aria-pressed="true"]{border-color:var(--accent); color:var(--accent)}
+.filters button[aria-pressed="true"] .n{color:inherit}
 .paper{padding:18px 0; border-bottom:1px solid var(--rule)}
 .paper:last-child{border-bottom:0}
 .paper[hidden]{display:none}
@@ -206,9 +294,18 @@ svg.read{display:block; width:100%; height:auto; overflow:visible}
 .paper .where{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:8px; font-family:var(--mono); font-size:.72rem; color:var(--steel)}
 .paper .where a{color:var(--accent-2); text-decoration:none}
 .paper .where a:hover{text-decoration:underline}
-.status{border:1px solid var(--rule); border-radius:2px; padding:2px 7px}
+.status{border:1px solid var(--rule); border-radius:2px; padding:2px 7px; white-space:nowrap}
 .status.pub{color:var(--accent); border-color:var(--accent)}
-.status.pre{color:var(--accent-2); border-color:var(--accent-2)}
+.status.rev{color:var(--accent-2); border-color:var(--accent-2)}
+.status.review{color:var(--accent-2); border-color:var(--accent-2); border-style:dashed}
+.status.pre{color:var(--muted)}
+.talks{margin-top:40px}
+
+/* outside the lab --------------------------------------------------------- */
+.trail{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:28px}
+.trail figure{margin:0}
+.trail img{display:block; width:100%; height:auto; aspect-ratio:4 / 5; object-fit:cover; border-radius:4px; background:var(--surface)}
+.trail figcaption{margin-top:8px; font-family:var(--mono); font-size:.68rem; line-height:1.45; color:var(--steel)}
 
 /* contact ----------------------------------------------------------------- */
 .contact-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px 28px; margin-top:6px}
@@ -228,7 +325,24 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
   .shell{padding:0 20px}
   main section{padding:56px 0}
   .readout{grid-template-columns:1fr}
+  .hello{grid-template-columns:1fr; gap:24px}
+  .portrait{width:112px; height:112px; margin:7px}
+  .portrait::after{inset:-7px}
+  .helps{margin-top:64px}
+  .asks{grid-template-columns:1fr}
+  .ask, .ask:nth-child(even){padding:20px 0; border-left:0}
+  .trail{
+    grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:74%;
+    overflow-x:auto; scroll-snap-type:x mandatory; margin-right:-20px; padding:0 20px 6px 0;
+  }
+  .trail figure{scroll-snap-align:start}
   .stat{grid-template-columns:82px 1fr 52px}
+  .plot .stat{grid-template-columns:82px 1fr 46px 44px}
+  .rng{grid-template-columns:76px 1fr 78px}
+  .checks div{grid-template-columns:1fr; gap:4px}
+  .flow{grid-template-columns:1fr}
+  .flow li{border-left:0; border-top:1px solid var(--rule)}
+  .flow li:first-child{border-top:0}
   .role .when{margin-left:0; width:100%}
   .tagline{display:none}
 }
@@ -244,18 +358,20 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
 <nav class="rail" aria-label="Sections">
   <ol id="rail-list">
     <li><a href="#top"><span class="tick"></span>start</a></li>
+    <li><a href="#research"><span class="tick"></span>research</a></li>
     <li><a href="#tools"><span class="tick"></span>tools</a></li>
     <li><a href="#work"><span class="tick"></span>work</a></li>
     <li><a href="#papers"><span class="tick"></span>papers</a></li>
+    <li><a href="#outside"><span class="tick"></span>outside</a></li>
     <li><a href="#contact"><span class="tick"></span>contact</a></li>
   </ol>
 </nav>
 
 <div class="topbar">
   <div class="shell">
-    <a class="brand" href="#top"><b>Aaron O'Brien</b><span class="tagline"> / bioinformatics + software</span></a>
+    <a class="brand" href="#top"><b>Aaron O'Brien</b><span class="tagline"> / bioinformatics for microbial ecology</span></a>
     <div class="jump">
-      <a href="#tools">tools</a><a href="#work">work</a><a href="#papers">papers</a><a href="#contact">contact</a>
+      <a href="#research">research</a><a href="#tools">tools</a><a href="#work">work</a><a href="#papers">papers</a><a href="#outside">outside</a><a href="#contact">contact</a>
     </div>
     <button class="theme" id="theme" type="button" aria-label="Switch to light theme">light</button>
   </div>
@@ -266,45 +382,187 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
 <!-- ============================================================= hero -->
 <section id="top" class="hero">
   <div class="shell">
-    <h1>Aaron O'Brien</h1>
-    <p class="lede">I build the software that turns long sequencing reads into taxonomy you can trust,
-      <b>ITSxRust</b>, <b>EMITS</b> and <b>SSUplex</b>, written in Rust and used in fungal and
-      environmental metabarcoding workflows. Day to day I run the Nanopore amplicon work at the
-      Centro de Biotecnología de Sistemas in Santiago, from library handoff to the dashboard the
-      biologist actually opens.</p>
-    <div class="meta">
-      <span><i></i>Centro de Biotecnología de Sistemas, Universidad Andrés Bello</span>
-      <span><i></i>Santiago, Chile</span>
+    <div class="hello">
+      <div class="portrait">
+        <img src="img/portrait.jpg" width="360" height="360"
+             alt="Aaron O'Brien, smiling, in front of a tree in pink bloom">
+      </div>
+      <div>
+        <h1>Aaron O'Brien</h1>
+        <p class="lede">I'm a bioinformatician at the Centro de Biotecnología de Sistemas in Santiago,
+          Chile. I help biologists turn DNA sequencing into answers about fungi and other microbes:
+          which ones are in a sample, how much of each, and which ones nobody has named yet.</p>
+        <p class="lede">Along the way I write open-source tools, <b>ITSxRust</b>, <b>EMITS</b> and
+          <b>SSUplex</b>, and test how far the usual methods can be trusted.</p>
+        <div class="actions">
+          <a class="btn" href="mailto:obrien.aaron.g@gmail.com">Email me</a>
+          <span>in English or Spanish</span>
+        </div>
+      </div>
     </div>
 
-    <div class="explorer">
-      <div class="bar">
-        <span class="lbl">amplicon design</span>
-        <button class="preset" type="button" data-preset="0" aria-pressed="true">ITS1 / ITS4</button>
-        <button class="preset" type="button" data-preset="1" aria-pressed="false">NS5 / LR6</button>
+    <div class="helps">
+      <div class="s-head"><h2>How I can help</h2><span class="count">from primer choice to the final figure</span></div>
+      <p class="intro">Most of my projects start with a biologist and a question. You bring the samples
+        or the reads; I bring the pipeline, the statistics and a report your whole lab can open in a
+        browser. It's worth talking before you sequence too, because the primer pair decides much of
+        what the analysis can recover.</p>
+      <div class="asks">
+        <article class="ask">
+          <h3>What's in my samples?</h3>
+          <p>Bacteria and archaea from 16S and fungi from ITS, sequenced on Nanopore, PacBio or
+            Illumina and matched against curated references such as SILVA and UNITE.</p>
+          <p class="via"><a href="#pipelines">amplicon pipelines</a><a href="#ssuplex">SSUplex</a></p>
+        </article>
+        <article class="ask">
+          <h3>How much of each?</h3>
+          <p>Species-level abundances that share a read between look-alike species instead of handing
+            it to the first match, so close relatives aren't over- or under-counted.</p>
+          <p class="via"><a href="#emits">EMITS</a></p>
+        </article>
+        <article class="ask">
+          <h3>Is it something new?</h3>
+          <p>Sequences that match nothing in the reference get a calibrated flag, with the false-alarm
+            rate set in advance, so calling something novel is a claim you can defend.</p>
+          <p class="via"><a href="#flag">novelty flag</a></p>
+        </article>
+        <article class="ask">
+          <h3>Which primers should I use?</h3>
+          <p>Your primer pair decides which regions each read carries and what can be recovered from
+            it. The read explorer shows how much one choice changes.</p>
+          <p class="via"><a href="#explorer">read explorer</a></p>
+        </article>
       </div>
-      <div class="stage">
-        <svg class="read" viewBox="0 0 960 150" role="img" aria-labelledby="readTitle readDesc">
-          <title id="readTitle">A long read split into ribosomal regions</title>
-          <desc id="readDesc">The ITS region sits between conserved ribosomal flanks. Switching the
-            primer pair changes how much flanking sequence a read carries, and whether all four
-            profile-HMM anchors can be matched.</desc>
-          <defs>
-            <pattern id="variable" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
-              <line x1="0" y1="0" x2="0" y2="7" style="stroke:var(--tex)" stroke-width="2"/>
-            </pattern>
-          </defs>
-          <g id="segments"></g>
-          <g id="anchors"></g>
-          <g id="scalebar"></g>
-        </svg>
-      </div>
-      <div class="readout">
-        <div class="chain" id="chain"><b>4/4</b>anchors matched</div>
-        <p class="caption" id="caption"></p>
-      </div>
-      <p class="source">Extraction rates and timings from O'Brien et al. 2026, Methods in Ecology and Evolution.</p>
+      <p class="outro">What you get back: an interactive report the whole lab can explore, a pipeline
+        that reruns end to end, and a methods section ready for your manuscript. Recent projects
+        include vineyard soils, tree roots and mycorrhizal fungi, bioleaching and acid mine drainage,
+        compost time series and food-safety surveillance.</p>
     </div>
+  </div>
+</section>
+
+<!-- ============================================================= research -->
+<section id="research">
+  <div class="shell">
+    <div class="s-head"><h2>Research</h2><span class="count">three studies, all under review</span></div>
+    <p class="intro">Much of the fungal DNA in a soil sample comes from groups that no reference
+      database has a name for, yet classification software still hands back a name. These three
+      companion studies ask how often those names are wrong, whether newer AI classifiers do any
+      better than a plain similarity search, and how to flag sequences that are genuinely new at an
+      error rate you choose.</p>
+
+    <article class="rstudy" id="audit">
+      <div class="venue"><span class="status review">under review</span><span>Briefings in Bioinformatics</span></div>
+      <h3>Released deep-learning ITS classifiers collapse on ITS2</h3>
+      <p class="with">With Auguste Gardette, César Marín and Pilar Parada</p>
+      <p class="plain">On ITS2 amplicons, the kind most fungal surveys produce, the two released
+        MycoAI classifiers assign the wrong family most of the time, even for genera they were trained
+        on. A plain similarity search still gets nearly nine in ten right.</p>
+      <p class="body">Five methods scored the same 5,222 queries, one per genus, at two loci cut from
+        the same records: the full-length ITS and its ITS2 subregion. On full-length ITS, best-hit
+        alignment, SINTAX and a k-mer classifier (HiTaC) beat both pretrained MycoAI models at every
+        rank. Cutting the records down to ITS2 is where the models fall apart.</p>
+
+      <div class="figure" id="locus">
+        <div class="bar">
+          <span class="lbl">scored as</span>
+          <button class="preset" type="button" data-locus="0" aria-pressed="true">full-length ITS</button>
+          <button class="preset" type="button" data-locus="1" aria-pressed="false">ITS2 only</button>
+          <span class="key"><i class="base"></i>classical<i class="dl"></i>deep learning</span>
+        </div>
+        <div class="plot"><div class="stats" id="locus-bars"></div></div>
+        <div class="swap" id="locus-notes" aria-live="polite">
+          <p class="fig-note" data-locus="0">Share of seen-genus queries given the correct family, on
+            the full-length records the MycoAI models were trained on. Every method scored identical
+            queries, and the classical methods already lead.</p>
+          <p class="fig-note" data-locus="1">The same records cut to ITS2, the subregion surveys most
+            often sequence. Alignment and SINTAX lose under four points; MycoAI-BERT loses <b>49.6</b>
+            and MycoAI-CNN <b>58.0</b>.</p>
+        </div>
+        <p class="source">From the manuscript under review at Briefings in Bioinformatics.</p>
+      </div>
+
+      <p class="body">ITS2 carries the information, since HiTaC refitted at ITS2 keeps
+        <b>89.2%</b>; the released models read the flanks instead. Grafting a query's unaltered ITS2
+        between the flanks of a donor from another phylum made MycoAI-BERT return the donor's family
+        for <b>63.7%</b> of queries and the query's own for <b>0.8%</b>. On ITS2 their confidence
+        scores also stopped separating novel genera from known ones (AUROC 0.541 and 0.503, against
+        0.866 for alignment identity).</p>
+      <div class="links">
+        <a href="https://github.com/ayobi/its-classifier-audit">code</a>
+        <a href="https://doi.org/10.64898/2026.07.29.741510">preprint, earlier version</a>
+      </div>
+    </article>
+
+    <article class="rstudy" id="embedding">
+      <div class="venue"><span class="status review">under review</span><span>Methods in Ecology and Evolution</span></div>
+      <h3>A learned embedding does not outperform correctly configured alignment</h3>
+      <p class="with">With Auguste Gardette</p>
+      <p class="plain">We built an AI model specifically for fungal barcodes, and it did not beat a
+        carefully configured similarity search. How the test was run changed the answer more than the
+        model did.</p>
+      <p class="body">We trained a convolutional encoder for fungal ITS with genus-proxy, cross-view,
+        hierarchical and episodic objectives, then froze and hash-sealed it before the test partition
+        was opened. Exhaustive VSEARCH identity scored the same queries against the same references,
+        on a genus-separated split of UNITE at ITS-core, ITS1 and ITS2 views. Once the evaluation was
+        corrected, alignment matched or exceeded the encoder throughout.</p>
+
+      <div class="figure">
+        <div class="ranges" id="ow-ranges">
+          <div class="rng"><span class="who">alignment</span><span class="track"><span class="span id" data-lo="80.0" data-hi="84.6"></span></span><span class="val">80.0–84.6%</span></div>
+          <div class="rng"><span class="who">learned encoder</span><span class="track"><span class="span" data-lo="53.8" data-hi="64.8"></span></span><span class="val">53.8–64.8%</span></div>
+          <div class="rng scale" aria-hidden="true"><span></span><span class="ticks"><span>0</span><span>50</span><span>100%</span></span><span></span></div>
+        </div>
+        <p class="fig-note">Queries from genera held out of the reference, placed in the correct
+          family. Each bar spans the three views, after the corrections below.</p>
+      </div>
+
+      <p class="body">Five evaluation checks each changed a conclusion along the way:</p>
+      <dl class="checks">
+        <div><dt>baseline configuration</dt><dd>Default VSEARCH heuristics returned a lower-identity
+          hit than exhaustive search for <b>48.3%</b> of queries. Without a coverage filter, identity
+          put only <b>64.9%</b> of novel ITS-core queries in the correct class, because the conserved
+          5.8S let short partial alignments win; with one, <b>98.7%</b>.</dd></div>
+        <div><dt>batch invariance</dt><dd>The encoder's embeddings shifted with inference batching,
+          because padding leaked into its normalisation and convolutions.</dd></div>
+        <div><dt>genus-level uncertainty</dt><dd>With intervals clustered by genus, the encoder's
+          novelty AUROC was within <b>0.023</b> of identity's at every view, and no interval excluded
+          zero.</dd></div>
+        <div><dt>selection control</dt><dd>Identity's own development-to-test gap was larger than the
+          encoder's, so that gap reflects how the partitions were composed rather than model
+          selection.</dd></div>
+        <div><dt>leakage audit</dt><dd><b>85%</b> of the genera an earlier benchmark held out had been
+          present during training. On a leakage-safe rebuild, identity's AUROC advantage was 0.065,
+          with an interval that excluded zero.</dd></div>
+      </dl>
+      <p class="body">The decisive results came from the evaluation, not the representation, and each
+        check is cheap to apply to any learned barcode method.</p>
+    </article>
+
+    <article class="rstudy" id="flag">
+      <div class="venue"><span class="status review">under review</span><span>IMA Fungus</span></div>
+      <h3>Choosing the error rate at which sequences are declared new</h3>
+      <p class="with">With César Marín and Pilar Parada</p>
+      <p class="plain">A way to say &ldquo;this sequence is probably something new&rdquo; while knowing
+        in advance how often that call will be a false alarm.</p>
+      <p class="body">A fixed identity cutoff comes with no stated rate at which known fungi get called
+        new. The flag gives each environmental sequence a conformal p-value instead, with a
+        distribution-free bound on that rate. It was tested on a leave-one-genus-out benchmark built
+        from UNITE, then applied to soil data and to a cross-study recurrence search for lineages that
+        are widespread but still unnamed, candidates for formal description.</p>
+      <ol class="flow" role="list">
+        <li><span class="step">gate</span><p>Screen against a pan-eukaryotic reference first. Plant
+          ITS2 is amplified alongside fungi and otherwise looks novel against a fungal reference.</p></li>
+        <li><span class="step">score</span><p>Rank each sequence's best alignment identity against a
+          calibration set from known genera held out of the reference. The rank is its p-value.</p></li>
+        <li><span class="step">declare</span><p>Call it new when the p-value falls below α, chosen in
+          advance. Known sequences are then declared new at a rate bounded by α.</p></li>
+      </ol>
+      <div class="links">
+        <a href="https://github.com/ayobi/its-novelty">code</a>
+        <a href="https://doi.org/10.64898/2026.07.29.741524">preprint</a>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -315,14 +573,44 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
 
     <p class="group-label">Open source</p>
 
-    <article class="tool">
-      <div class="name"><h3>ITSxRust</h3><span class="role">ITS extraction for long reads</span></div>
-      <p>Finds ITS1, 5.8S and ITS2 inside Nanopore and PacBio amplicons by chaining four
+    <article class="tool" id="itsxrust">
+      <div class="name"><h3>ITSxRust</h3><span class="role">finds the fungal barcode in each read</span></div>
+      <p>Cuts the fungal barcode out of each long read, and tells you why when it can't. Under the
+        hood it finds ITS1, 5.8S and ITS2 inside Nanopore and PacBio amplicons by chaining four
         profile-HMM anchors, and falls back to two-anchor pairs when a read is missing a flank, so
         every region it returns still has a model boundary on both sides rather than a read edge.
         Failures come back as structured codes and a per-sample QC summary instead of a silently
         shorter FASTA.</p>
       <div class="tags"><span class="tag">Rust</span><span class="tag">profile-HMM</span><span class="tag">Bioconda</span><span class="tag">nf-core/ampliseq</span></div>
+      <div class="explorer" id="explorer">
+        <div class="bar">
+          <span class="lbl">primer pair</span>
+          <button class="preset" type="button" data-preset="0" aria-pressed="true">ITS1 / ITS4</button>
+          <button class="preset" type="button" data-preset="1" aria-pressed="false">NS5 / LR6</button>
+          <span class="hint">tap or hover a region to see what it is</span>
+        </div>
+        <div class="stage">
+          <svg class="read" viewBox="0 0 960 150" role="img" aria-labelledby="readTitle readDesc">
+            <title id="readTitle">A long read split into ribosomal regions</title>
+            <desc id="readDesc">The ITS region sits between conserved ribosomal flanks. Switching the
+              primer pair changes how much flanking sequence a read carries, and whether all four
+              profile-HMM anchors can be matched.</desc>
+            <defs>
+              <pattern id="variable" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+                <line x1="0" y1="0" x2="0" y2="7" style="stroke:var(--tex)" stroke-width="2"/>
+              </pattern>
+            </defs>
+            <g id="segments"></g>
+            <g id="anchors"></g>
+            <g id="scalebar"></g>
+          </svg>
+        </div>
+        <div class="readout">
+          <div class="chain" id="chain"><b>4/4</b>anchors matched</div>
+          <p class="caption" id="caption"></p>
+        </div>
+        <p class="source">Extraction rates and timings from O'Brien et al. 2026, Methods in Ecology and Evolution.</p>
+      </div>
       <div class="stats" id="bench">
         <div class="stat mine"><span class="who">ITSxRust</span><span class="meter"><span class="fill" data-pct="75.3"></span></span><span class="val">75.3%</span></div>
         <div class="stat"><span class="who">ITSx</span><span class="meter"><span class="fill" data-pct="69.9"></span></span><span class="val">69.9%</span></div>
@@ -335,27 +623,31 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
       </div>
     </article>
 
-    <article class="tool">
-      <div class="name"><h3>EMITS</h3><span class="role">abundance estimation</span></div>
-      <p>Reads that map equally well to several UNITE references are the reason species-level
-        abundance tables lie. EMITS runs expectation-maximization over minimap2 alignments to split
-        those reads probabilistically and aggregate across redundant accessions, with presets for
+    <article class="tool" id="emits">
+      <div class="name"><h3>EMITS</h3><span class="role">how much of each species</span></div>
+      <p>Reads that match several species almost equally well are why species-level abundance tables
+        lie. EMITS shares those reads between the candidate species instead of guessing, so close
+        relatives aren't over- or under-counted. Under the hood it runs expectation-maximization over
+        minimap2 alignments against UNITE, aggregates across redundant accessions, and has presets for
         Nanopore and PacBio chemistries.</p>
-      <div class="tags"><span class="tag">Rust</span><span class="tag">expectation-maximization</span><span class="tag">minimap2</span><span class="tag">UNITE</span></div>
+      <div class="tags"><span class="tag">Rust</span><span class="tag">expectation-maximization</span><span class="tag">minimap2</span><span class="tag">UNITE</span><span class="tag">Bioconda</span></div>
       <div class="links">
         <a href="https://github.com/ayobi/emits">source</a>
-        <a href="https://doi.org/10.64898/2026.03.31.715662">preprint</a>
+        <a href="https://doi.org/10.1111/2041-210x.70418">paper</a>
       </div>
     </article>
 
-    <article class="tool">
-      <div class="name"><h3>SSUplex</h3><span class="role">small-subunit extraction</span></div>
-      <p>Pulls small-subunit rRNA out of environmental reads on either strand and sorts what it
-        finds by origin, which matters when host or organellar sequence would otherwise swamp the
-        target community.</p>
-      <div class="tags"><span class="tag">Rust</span><span class="tag">eDNA</span><span class="tag">16S / 18S</span></div>
+    <article class="tool" id="ssuplex">
+      <div class="name"><h3>SSUplex</h3><span class="role">sorts ribosomal reads by origin</span></div>
+      <p>Sorts ribosomal reads by where they came from: bacteria, archaea, eukaryotes, mitochondria or
+        chloroplasts. That matters when host or organelle DNA would otherwise swamp the community you
+        meant to study. Under the hood it pulls small-subunit rRNA out of environmental reads on
+        either strand before sorting.</p>
+      <div class="tags"><span class="tag">Rust</span><span class="tag">eDNA</span><span class="tag">16S / 18S</span><span class="tag">Bioconda</span></div>
       <div class="links">
+        <a href="https://github.com/ayobi/ssuplex">source</a>
         <a href="https://doi.org/10.64898/2026.07.02.736232">preprint</a>
+        <a href="https://doi.org/10.5281/zenodo.23246210">v0.2.0 archive</a>
       </div>
     </article>
 
@@ -363,7 +655,7 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
 
     <article class="tool">
       <div class="name"><h3>CSB-LIMS</h3><span class="role">sample tracking</span></div>
-      <p>Where a sample came from, what was done to it and which run it ended up in — with
+      <p>Where a sample came from, what was done to it and which run it ended up in, with
         role-based access so the people doing the bench work can enter their own data.</p>
       <div class="tags"><span class="tag">FastAPI</span><span class="tag">React</span><span class="tag">PostgreSQL</span></div>
     </article>
@@ -375,7 +667,7 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
       <div class="tags"><span class="tag">FastAPI</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span></div>
     </article>
 
-    <article class="tool">
+    <article class="tool" id="pipelines">
       <div class="name"><h3>Amplicon pipelines</h3><span class="role">16S and ITS, end to end</span></div>
       <p>Snakemake and Nextflow workflows for the centre's Nanopore runs, with PICRUSt2 functional
         profiling and interactive D3 reports for vineyard soil, bioleaching and acid mine drainage,
@@ -389,6 +681,9 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
 <section id="work">
   <div class="shell">
     <div class="s-head"><h2>Work</h2><span class="count">ten years, industry and academia</span></div>
+    <p class="intro lead-in">I started out writing banking software, moved into bioinformatics
+      through a master's at the University of Maine, and still build tools the way software teams
+      do: tested, versioned and documented.</p>
     <div class="axis" id="axis"></div>
     <div id="career"></div>
     <p style="margin-top:22px; color:var(--muted); font-size:.94rem">
@@ -401,13 +696,46 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
 <section id="papers">
   <div class="shell">
     <div class="s-head"><h2>Papers</h2><span class="count" id="paper-count"></span></div>
-    <div class="filters" id="filters">
-      <button type="button" data-f="all" aria-pressed="true">all</button>
-      <button type="button" data-f="pub" aria-pressed="false">peer-reviewed</button>
-      <button type="button" data-f="pre" aria-pressed="false">preprint</button>
-      <button type="button" data-f="prep" aria-pressed="false">in preparation</button>
-    </div>
+    <div class="filters" id="filters" role="group" aria-label="Filter papers by status"></div>
     <div id="paper-list"></div>
+
+    <div class="talks">
+      <p class="group-label">Talks</p>
+      <article class="paper">
+        <div class="t">Fungal dark matter in mycorrhizal metabarcoding: calibrated novelty detection for ITS classification</div>
+        <p class="authors">Oral presentation, Micorriza y Microbioma session</p>
+        <div class="where"><span>IV International Symposium on Mycorrhizal Symbiosis in South America, Quito, Ecuador, August 2026</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= outside -->
+<section id="outside">
+  <div class="shell">
+    <div class="s-head"><h2>Outside the lab</h2></div>
+    <p class="intro">I like to hike, especially in Chile, where the Andes and their volcanoes are never
+      far away. I love the south, places like Valdivia and Puerto Varas, where a hike is also a walk
+      through fungal and plant diversity. Next I'd like to get to know northern Chile and the Atacama,
+      and to hike more in Canada, the US, Europe and Asia, places where the diversity is obvious and
+      the relationships between living things become easier to see.</p>
+    <div class="trail" role="region" aria-label="Photos from hikes" tabindex="0">
+      <figure>
+        <img src="img/conguillio-araucarias.jpg" width="640" height="800" loading="lazy" decoding="async"
+             alt="Araucaria trees framing a snow-capped volcano in Conguillío National Park, Chile">
+        <figcaption>Araucarias in Conguillío National Park, Chile</figcaption>
+      </figure>
+      <figure>
+        <img src="img/antisana.jpg" width="640" height="800" loading="lazy" decoding="async"
+             alt="Aaron in high grassland with the glaciers of Antisana volcano behind him, Ecuador">
+        <figcaption>Antisana volcano, Ecuador</figcaption>
+      </figure>
+      <figure>
+        <img src="img/antisana-paramo.jpg" width="640" height="800" loading="lazy" decoding="async"
+             alt="Aaron lying back in tussock grass in the páramo near Antisana, Ecuador, flashing a peace sign">
+        <figcaption>Páramo grass near Antisana, Ecuador</figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -415,9 +743,9 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
 <section id="contact">
   <div class="shell">
     <div class="s-head"><h2>Get in touch</h2></div>
-    <p style="color:var(--muted); max-width:58ch">Happy to talk about long-read metabarcoding,
-      pipeline engineering, or collaborations where the sequencing is done and the analysis needs
-      to hold up.</p>
+    <p style="color:var(--muted); max-width:58ch">Whether you have samples, reads or just a question
+      about primers, write to me in English or Spanish. I'm happy to talk through a project at any
+      stage, from choosing markers to making sure the analysis holds up in review.</p>
     <div class="contact-grid">
       <a href="mailto:obrien.aaron.g@gmail.com"><span class="k">email</span><span class="v">obrien.aaron.g@gmail.com</span></a>
       <a href="https://github.com/ayobi"><span class="k">github</span><span class="v">github.com/ayobi</span></a>
@@ -474,10 +802,10 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
         {id:"its2", label:"ITS2",  sub:"variable", bp:240, type:"its2"},
         {id:"lsu",  label:"LSU",   sub:"", bp:25,  type:"conserved"}
       ],
-      text: "The primer sits about <b>30 bp</b> from the SSU 3′ end, against a 45 bp profile model — " +
-            "there is nothing for that anchor to match. The chain can't close, so ITSxRust drops to a " +
-            "two-anchor pair and still returns <b>75.3%</b> of reads as full ITS, against 69.9% for ITSx " +
-            "and 41.4% for ITSxpress v2."
+      text: "With ITS1 / ITS4 the read keeps only about <b>30 bp</b> of SSU, too short for the 45 bp " +
+            "model that recognises it, so that anchor can't be found. ITSxRust falls back to a two-anchor " +
+            "pair and still returns <b>75.3%</b> of reads as full ITS, against 69.9% for ITSx and 41.4% " +
+            "for ITSxpress v2."
     },
     {
       name: "NS5 / LR6",
@@ -491,11 +819,11 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
       ],
       text: "Both flanks are long, so all four anchors match and the chain closes across the read. " +
             "On a 54-taxon library the ITS1 gap to ITSx narrows to <b>0.5 points</b> while the full-ITS " +
-            "advantage holds at <b>2.4</b> — the difference between designs is the primer pair, not the tool."
+            "advantage holds at <b>2.4</b>. The difference between designs is the primer pair, not the tool."
     }
   ];
   var SEG_TEXT = {
-    ssu:  "Small-subunit rRNA. Conserved, so a profile HMM can find its 3′ edge — when the primer leaves enough of it on the read.",
+    ssu:  "Small-subunit rRNA. Conserved, so a profile HMM can find its 3′ edge, when the primer leaves enough of it on the read.",
     its1: "Internal transcribed spacer 1. Variable enough to separate species, which is exactly why it can't be located by similarity alone.",
     "58s":"The 5.8S gene sits between the two spacers. Both of its boundaries are anchors, and they are the ones a short-flank read still has.",
     its2: "Internal transcribed spacer 2. The other half of the fungal barcode, bounded by 5.8S and the LSU start.",
@@ -507,8 +835,9 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
       scaleG = document.getElementById("scalebar"),
       caption = document.getElementById("caption"),
       chain = document.getElementById("chain");
-  var current = 0, built = false, nodes = {};
+  var current = 0, nodes = {};
   var NS = "http://www.w3.org/2000/svg";
+  var presetBtns = Array.prototype.slice.call(document.querySelectorAll(".explorer .preset"));
 
   function el(tag, attrs){
     var n = document.createElementNS(NS, tag);
@@ -546,13 +875,12 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
                          style:"font-family:var(--mono);font-size:11px;fill:var(--steel)"});
     scaleG.appendChild(sl); scaleG.appendChild(st);
     scaleG.slLine = sl; scaleG.slText = st;
-    built = true;
   }
 
   function say(html){ caption.innerHTML = html; }
   function reset(){ say(PRESETS[current].text); }
 
-  function render(idx, animate){
+  function render(idx){
     var p = PRESETS[idx], span = X1 - X0, x = X0;
     p.segs.forEach(function(s){
       var w = span * (s.bp / p.total), n = nodes[s.id];
@@ -587,12 +915,13 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
 
   function selectPreset(idx){
     current = idx;
-    Array.prototype.forEach.call(document.querySelectorAll(".preset"), function(b){
+    revealExplorer();
+    presetBtns.forEach(function(b){
       b.setAttribute("aria-pressed", String(Number(b.dataset.preset) === idx));
     });
-    render(idx, true);
+    render(idx);
   }
-  Array.prototype.forEach.call(document.querySelectorAll(".preset"), function(b){
+  presetBtns.forEach(function(b){
     b.addEventListener("click", function(){ selectPreset(Number(b.dataset.preset)); });
   });
 
@@ -612,57 +941,118 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
 
   build();
   fit();
-  if (reduce){ render(0); }
-  else {
-    // one orchestrated load: the read assembles left to right, then anchors settle
-    var p0 = PRESETS[0], span = X1 - X0, x = X0;
-    p0.segs.forEach(function(s){
+  // the read assembles left to right the first time it scrolls into view, then anchors settle
+  var explorerShown = reduce;
+  if (!reduce){
+    PRESETS[0].segs.forEach(function(s){
       var n = nodes[s.id];
       n.rect.setAttribute("x", X0); n.rect.setAttribute("width", 0);
       n.tex.setAttribute("x", X0);  n.tex.setAttribute("width", 0);
     });
     ancG.setAttribute("opacity", 0);
+  }
+  function revealExplorer(){
+    if (explorerShown) return;
+    explorerShown = true;
     requestAnimationFrame(function(){ setTimeout(function(){
-      render(0);
+      render(current);
       ancG.style.transition = "opacity .6s ease .45s";
       ancG.setAttribute("opacity", 1);
     }, 80); });
   }
 
+  /* ---------------------------------------------------------- audit figure: one set of records, two loci */
+  // Seen-genus family accuracy on full-length ITS and on the ITS2 subregion of the same records.
+  var LOCUS_ROWS = [
+    {name:"alignment",   kind:"base", v:[92.3, 88.6]},
+    {name:"SINTAX",      kind:"base", v:[92.0, 88.5]},
+    {name:"MycoAI-BERT", kind:"dl",   v:[77.9, 28.3]},
+    {name:"MycoAI-CNN",  kind:"dl",   v:[76.5, 18.5]}
+  ];
+  var locusBars = document.getElementById("locus-bars");
+  var locusNotes = Array.prototype.slice.call(document.querySelectorAll("#locus-notes .fig-note"));
+  var locusBtns = Array.prototype.slice.call(document.querySelectorAll("#locus .preset"));
+  var locus = 0, locusShown = false, locusNodes = [];
+  LOCUS_ROWS.forEach(function(r){
+    var row = document.createElement("div");
+    row.className = "stat " + r.kind;
+    row.innerHTML = '<span class="who">' + r.name + '</span>' +
+      '<span class="meter"><span class="fill"></span></span>' +
+      '<span class="val"></span><span class="d"></span>';
+    locusBars.appendChild(row);
+    locusNodes.push({r:r, fill:row.querySelector(".fill"),
+                     val:row.querySelector(".val"), d:row.querySelector(".d")});
+  });
+  function drawLocus(){
+    locusNodes.forEach(function(n){
+      var v = n.r.v[locus], drop = Math.abs(n.r.v[1] - n.r.v[0]);
+      n.val.textContent = v.toFixed(1) + "%";
+      n.d.textContent = locus === 1 ? "\u2212" + drop.toFixed(1) : "";
+      if (locusShown) n.fill.style.width = v + "%";
+    });
+    locusNotes.forEach(function(p){
+      p.setAttribute("aria-hidden", String(Number(p.dataset.locus) !== locus));
+    });
+    locusBtns.forEach(function(b){
+      b.setAttribute("aria-pressed", String(Number(b.dataset.locus) === locus));
+    });
+  }
+  locusBtns.forEach(function(b){
+    b.addEventListener("click", function(){
+      locus = Number(b.dataset.locus);
+      locusShown = true;
+      drawLocus();
+    });
+  });
+  drawLocus();
+  function revealLocus(){ locusShown = true; drawLocus(); }
+
+  /* ---------------------------------------------------------- open-world ranges */
+  var rangeSpans = Array.prototype.slice.call(document.querySelectorAll("#ow-ranges .span"));
+  rangeSpans.forEach(function(s){ s.style.left = s.dataset.lo + "%"; });
+  function revealRanges(){
+    rangeSpans.forEach(function(s){
+      s.style.width = (Number(s.dataset.hi) - Number(s.dataset.lo)) + "%";
+    });
+  }
+
   /* ---------------------------------------------------------- career */
+  var today = new Date();
+  var NOW = today.getFullYear() + today.getMonth() / 12 + (today.getDate() - 1) / 365;
   var ROLES = [
     {title:"Bioinformatician and research software engineer",
      org:"Centro de Biotecnología de Sistemas, Universidad Andrés Bello",
-     when:"Jan 2026 — present", from:2026.0, to:2026.75, open:true,
+     when:"Jan 2026 – present", from:2026.0, to:NOW, open:true,
      points:[
        "Author and maintainer of ITSxRust, EMITS and SSUplex, the Rust toolkit behind the centre's long-read amplicon work.",
+       "Lead an open-world evaluation of fungal ITS classification, from an audit of released deep-learning classifiers to a calibrated novelty flag, with three manuscripts under review.",
        "Run Nanopore 16S and ITS projects end to end: Snakemake and Nextflow pipelines, PICRUSt2 profiling, and D3 reports for the researchers who commissioned the run.",
        "Built CSB-LIMS for sample tracking and BioBalance for bioleaching metal balances, both deployed in the lab.",
-       "Benchmarked archaeal reference databases against acid mine drainage data — a 5.2× improvement in genus-level assignment."
+       "Benchmarked archaeal reference databases against acid mine drainage data, with a 5.2× improvement in genus-level assignment."
      ]},
     {title:"Research associate", org:"Universität des Saarlandes, Clinical Bioinformatics",
-     when:"Jul — Dec 2025", from:2025.5, to:2026.0,
+     when:"Jul – Dec 2025", from:2025.5, to:2026.0,
      points:["Built a HiFi and Nanopore metagenomics pipeline in Snakemake (Flye, Medaka/Pilon, QUAST/BUSCO, GTDB-Tk) for reproducible assemblies at scale."]},
     {title:"Bioinformatics programmer and integration manager",
      org:"UC San Diego, Center for Microbiome Innovation",
-     when:"Jan 2024 — Jan 2025", from:2024.0, to:2025.0,
+     when:"Jan 2024 – Jan 2025", from:2024.0, to:2025.0,
      points:["Maintained the front and back end of the Microsetta Initiative's services.",
              "Full-stack Python: Flask, PostgreSQL, Jinja2 and React."]},
     {title:"Scientific programmer", org:"University of Virginia, Sheffield lab",
-     when:"Apr — Sep 2023", from:2023.25, to:2023.75,
+     when:"Apr – Sep 2023", from:2023.25, to:2023.75,
      points:["Full-stack work on PEPhub, a database, web interface and API for biological sample metadata (FastAPI, PostgreSQL, React)."]},
     {title:"QA analyst", org:"Kraken Digital Asset Exchange",
-     when:"Jun 2020 — Nov 2022", from:2020.42, to:2022.87,
+     when:"Jun 2020 – Nov 2022", from:2020.42, to:2022.87,
      points:["Automated UI tests in Python with Playwright and ran regression testing on the advanced trading panel."]},
     {title:"Software engineer I & II", org:"CenterState Bank",
-     when:"Dec 2016 — Jan 2020", from:2016.92, to:2020.0,
+     when:"Dec 2016 – Jan 2020", from:2016.92, to:2020.0,
      points:["Full-stack .NET in F#, C# and Razor (React, Fable); built several internal web applications."]},
     {title:"M.S. Bioinformatics", org:"University of Maine", study:true,
-     when:"2020 — 2024", from:2020.0, to:2024.5,
+     when:"2020 – 2024", from:2020.0, to:2024.5,
      points:["Tech lead on a group soil microbiome project; ran the QIIME2 pipeline and the HPC Linux cluster.",
              "Wrote a manuscript comparing two short-read denoising algorithms."]}
   ];
-  var AX0 = 2016.5, AX1 = 2027.0;
+  var AX0 = 2016.5, AX1 = Math.max(2027.0, NOW + 0.25);
   var axisEl = document.getElementById("axis");
   [2017, 2019, 2021, 2023, 2025, 2026].forEach(function(yr){
     var t = document.createElement("span");
@@ -700,27 +1090,37 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
   });
 
   /* ---------------------------------------------------------- papers */
+  // To update a paper, change its status (s) and venue line (v); filters and counts follow.
+  var STATUS = {pub:"published", rev:"in revision", review:"under review", pre:"preprint", prep:"in preparation"};
+  var STATUS_ORDER = ["pub", "rev", "review", "pre", "prep"];
   var PAPERS = [
     {t:"ITSxRust: ITS region extraction with partial-chain recovery and structured diagnostics for long-read amplicon sequencing",
      a:"O'Brien, A., Lagos, C., Fernández, K., Ojeda, B., & Parada, P.",
-     v:"Methods in Ecology and Evolution, 2026", s:"pub", sl:"peer-reviewed",
-     href:"https://doi.org/10.1111/2041-210x.70393", link:"10.1111/2041-210x.70393"},
+     v:"Methods in Ecology and Evolution, 17, 2843–2853, 2026", s:"pub",
+     links:[{href:"https://doi.org/10.1111/2041-210x.70393", label:"10.1111/2041-210x.70393"}]},
     {t:"EMITS: expectation-maximization abundance estimation for fungal ITS communities from long-read sequencing",
      a:"O'Brien, A., Lagos, C., Fernández, K., Ojeda, B., & Parada, P.",
-     v:"Methods in Ecology and Evolution, accepted 2026", s:"pub", sl:"accepted",
-     href:"https://doi.org/10.64898/2026.03.31.715662", link:"preprint"},
+     v:"Methods in Ecology and Evolution, 2026", s:"pub",
+     links:[{href:"https://doi.org/10.1111/2041-210x.70418", label:"10.1111/2041-210x.70418"}]},
     {t:"SSUplex: fast, both-strand extraction and origin-sorting of small-subunit rRNA for environmental DNA metabarcoding",
      a:"O'Brien, A., Vargas, J., Acuña, I., Restovic, F., Martínez, P., & Parada, P.",
-     v:"bioRxiv, 2026", s:"pre", sl:"preprint",
-     href:"https://doi.org/10.64898/2026.07.02.736232", link:"10.64898/2026.07.02.736232"},
+     v:"Bioinformatics Advances, revision 1", s:"rev",
+     links:[{href:"https://doi.org/10.64898/2026.07.02.736232", label:"preprint"}]},
+    {t:"A learned fungal ITS embedding does not outperform correctly configured alignment in open-world evaluation",
+     a:"O'Brien, A., & Gardette, A.",
+     v:"Methods in Ecology and Evolution", s:"review", links:[]},
+    {t:"Classical baselines outperform released deep-learning ITS classifiers, which collapse on ITS2 where predictions follow the flanking regions",
+     a:"O'Brien, A., Gardette, A., Marín, C., & Parada, P.",
+     v:"Briefings in Bioinformatics", s:"review",
+     links:[{href:"https://doi.org/10.64898/2026.07.29.741510", label:"preprint, earlier version"}]},
+    {t:"A calibrated novelty flag for fungal ITS metabarcoding: choosing the error rate at which sequences are declared new",
+     a:"O'Brien, A., Marín, C., & Parada, P.",
+     v:"IMA Fungus", s:"review",
+     links:[{href:"https://doi.org/10.64898/2026.07.29.741524", label:"preprint"}]},
     {t:"PEPhub: a database, web interface, and API for editing, sharing, and validating biological sample metadata",
      a:"LeRoy, N. J., Khoroshevskyi, O., O'Brien, A., Stepien, R., Arslan, A., & Sheffield, N. C.",
-     v:"GigaScience, volume 13, 2024", s:"pub", sl:"peer-reviewed",
-     href:"https://doi.org/10.1093/gigascience/giae033", link:"10.1093/gigascience/giae033"},
-    {t:"An audit of deep-learning ITS classifiers: confidence behaviour and failure modes in MycoAI",
-     a:"O'Brien, A., Gardette, A., et al.", v:"Manuscript in preparation, 2026", s:"prep", sl:"in preparation"},
-    {t:"Calibrated novelty detection for ITS classification: how far alignment and embedding methods get on genus-novel queries",
-     a:"O'Brien, A., et al.", v:"Manuscript in preparation, 2026", s:"prep", sl:"in preparation"}
+     v:"GigaScience, volume 13, 2024", s:"pub",
+     links:[{href:"https://doi.org/10.1093/gigascience/giae033", label:"10.1093/gigascience/giae033"}]}
   ];
   var listEl = document.getElementById("paper-list");
   PAPERS.forEach(function(p){
@@ -728,18 +1128,38 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
     d.className = "paper";
     d.setAttribute("data-s", p.s);
     var authors = p.a.replace("O'Brien, A.", "<em>O'Brien, A.</em>");
+    var links = (p.links || []).map(function(l){
+      return '<a href="' + l.href + '">' + l.label + '</a>';
+    }).join("");
     d.innerHTML =
       '<div class="t">' + p.t + '</div>' +
       '<p class="authors">' + authors + '</p>' +
-      '<div class="where"><span class="status ' + p.s + '">' + p.sl + '</span><span>' + p.v + '</span>' +
-      (p.href ? '<a href="' + p.href + '">' + p.link + '</a>' : '') + '</div>';
+      '<div class="where"><span class="status ' + p.s + '">' + STATUS[p.s] + '</span><span>' + p.v + '</span>' +
+      links + '</div>';
     listEl.appendChild(d);
   });
-  document.getElementById("paper-count").textContent = PAPERS.length + " total, 5 first-authored";
-  document.getElementById("filters").addEventListener("click", function(e){
+  var firsts = PAPERS.filter(function(p){ return p.a.indexOf("O'Brien, A.") === 0; }).length;
+  document.getElementById("paper-count").textContent =
+    PAPERS.length + " papers, " + firsts + " first-authored";
+
+  var filtersEl = document.getElementById("filters");
+  function addFilter(key, label, n, pressed){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("data-f", key);
+    b.setAttribute("aria-pressed", String(pressed));
+    b.innerHTML = label + ' <span class="n">' + n + '</span>';
+    filtersEl.appendChild(b);
+  }
+  addFilter("all", "all", PAPERS.length, true);
+  STATUS_ORDER.forEach(function(k){
+    var n = PAPERS.filter(function(p){ return p.s === k; }).length;
+    if (n) addFilter(k, STATUS[k], n, false);
+  });
+  filtersEl.addEventListener("click", function(e){
     var b = e.target.closest("button"); if (!b) return;
-    var f = b.dataset.f;
-    Array.prototype.forEach.call(this.querySelectorAll("button"), function(x){
+    var f = b.getAttribute("data-f");
+    Array.prototype.forEach.call(filtersEl.querySelectorAll("button"), function(x){
       x.setAttribute("aria-pressed", String(x === b));
     });
     Array.prototype.forEach.call(listEl.children, function(c){
@@ -747,7 +1167,18 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
     });
   });
 
-  /* ---------------------------------------------------------- scrollspy + meters */
+  /* ---------------------------------------------------------- scrollspy + reveals */
+  function revealBench(){
+    Array.prototype.forEach.call(document.querySelectorAll("#bench .fill"), function(f){
+      f.style.width = f.dataset.pct + "%";
+    });
+  }
+  var REVEALS = [
+    [document.getElementById("explorer"), revealExplorer],
+    [document.getElementById("bench"), revealBench],
+    [document.getElementById("locus-bars"), revealLocus],
+    [document.getElementById("ow-ranges"), revealRanges]
+  ];
   var links = Array.prototype.slice.call(document.querySelectorAll(".rail a"));
   var sections = links.map(function(a){ return document.querySelector(a.getAttribute("href")); });
   if ("IntersectionObserver" in window){
@@ -760,20 +1191,16 @@ footer{border-top:1px solid var(--rule); padding:26px 0 40px; font-family:var(--
     }, {rootMargin:"-45% 0px -50% 0px"});
     sections.forEach(function(s){ if (s) spy.observe(s); });
 
-    var meters = new IntersectionObserver(function(entries){
+    var reveals = new IntersectionObserver(function(entries){
       entries.forEach(function(en){
         if (!en.isIntersecting) return;
-        Array.prototype.forEach.call(en.target.querySelectorAll(".fill"), function(f){
-          f.style.width = f.dataset.pct + "%";
-        });
-        meters.unobserve(en.target);
+        REVEALS.forEach(function(r){ if (r[0] === en.target) r[1](); });
+        reveals.unobserve(en.target);
       });
     }, {threshold:.4});
-    meters.observe(document.getElementById("bench"));
+    REVEALS.forEach(function(r){ if (r[0]) reveals.observe(r[0]); });
   } else {
-    Array.prototype.forEach.call(document.querySelectorAll(".fill"), function(f){
-      f.style.width = f.dataset.pct + "%";
-    });
+    REVEALS.forEach(function(r){ r[1](); });
   }
 })();
 </script>
