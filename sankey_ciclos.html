@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sankey — Ciclos Biogeoquímicos del Viñedo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-sankey/0.12.3/d3-sankey.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2744;--red:#c4293c;--green:#2a7a5a;--blue:#3a6ab0;--purple:#6b3fa0;--amber:#d4880a;--paper:#fafbfc;--ink:#3d4f6a;--muted:#8a96a8;--border:#e2e6ec;--subtle:#f4f6f9}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito Sans',sans-serif;background:var(--subtle);color:var(--ink);line-height:1.6}
+.header{background:linear-gradient(135deg,#1a2744,#2a3d5e);padding:28px 40px;position:relative}
+.header h1{font-family:'Libre Baskerville',serif;font-size:24px;color:#fff;font-weight:700}
+.header p{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+.nav{background:var(--paper);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;gap:0}
+.nav-link{padding:14px 20px;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .2s;font-family:'Nunito Sans',sans-serif}
+.nav-link:hover{color:var(--ink)}.nav-link.on{color:var(--navy);border-bottom-color:var(--red)}
+.main{max-width:1200px;margin:0 auto;padding:20px 40px 80px}
+.sec{display:none}.sec.on{display:block}
+.card{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.card h3{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.desc{font-size:13px;color:var(--muted);margin-bottom:16px;max-width:700px}
+.tt{position:fixed;pointer-events:none;background:var(--navy);color:#fff;padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.5;z-index:200;max-width:300px;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transition:opacity .12s}
+.tt b{font-size:13px}
+.sankey-node text{font-family:'Nunito Sans',sans-serif;font-size:12px;font-weight:700;fill:#2d3e5a}
+@media(max-width:900px){.main,.nav-inner{padding-left:16px;padding-right:16px}}
+</style>
+</head>
+<body>
+<div id="tt" class="tt"></div>
+
+<div class="header">
+  <h1>Diagramas Sankey — Ciclos Biogeoquímicos</h1>
+  <p>Flujo de abundancia funcional predicha (PICRUSt2) desde variedades de vid hacia procesos y genes</p>
+</div>
+
+<div class="nav"><div class="nav-inner">
+  <button class="nav-link on" data-s="mega">Vista Integrada</button>
+  <button class="nav-link" data-s="nitrogen">Nitrógeno</button>
+  <button class="nav-link" data-s="carbon">Carbono</button>
+  <button class="nav-link" data-s="sulfur">Azufre</button>
+</div></div>
+
+<div class="main">
+
+<div class="sec on" id="sec-mega">
+  <div class="card">
+    <div class="tag">Vista integrada</div>
+    <h3>Variedad → Ciclo Biogeoquímico → Proceso</h3>
+    <div class="desc">Flujo de abundancia funcional total desde las tres variedades de vid hacia los ciclos de N, C y S, y sus procesos individuales.</div>
+    <div id="sk-mega"></div>
+  </div>
+</div>
+
+<div class="sec" id="sec-nitrogen">
+  <div class="card">
+    <div class="tag">Ciclo de Nitrógeno</div>
+    <h3>Variedad → Proceso → Gen (KO)</h3>
+    <div class="desc">Flujo desde Carignan, Cinsault y Ramsey hacia los 5 procesos del ciclo de N y sus 19 genes KEGG.</div>
+    <div id="sk-nitrogen"></div>
+  </div>
+</div>
+
+<div class="sec" id="sec-carbon">
+  <div class="card">
+    <div class="tag">Ciclo de Carbono</div>
+    <h3>Variedad → Proceso → Gen (KO)</h3>
+    <div class="desc">Fijación de carbono (Calvin) y metanotrofía.</div>
+    <div id="sk-carbon"></div>
+  </div>
+</div>
+
+<div class="sec" id="sec-sulfur">
+  <div class="card">
+    <div class="tag">Ciclo de Azufre</div>
+    <h3>Variedad → Proceso → Gen (KO)</h3>
+    <div class="desc">Asimilación de sulfato y oxidación Sox.</div>
+    <div id="sk-sulfur"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const SD={"nitrogen":{"nodes":[{"name":"Carignan","level":0},{"name":"Cinsault","level":0},{"name":"Ramsey","level":0},{"name":"Fijación N₂","level":1},{"name":"Nitrificación","level":1},{"name":"Red. asim. NO₃⁻","level":1},{"name":"Red. disim. NO₃⁻","level":1},{"name":"Desnitrificación","level":1},{"name":"nifD (K02586)","level":2},{"name":"nifH (K02588)","level":2},{"name":"nifK (K02591)","level":2},{"name":"amoA (K10944)","level":2},{"name":"amoB (K10945)","level":2},{"name":"amoC (K10946)","level":2},{"name":"hao (K10535)","level":2},{"name":"nasA (K00360)","level":2},{"name":"nirA (K00362)","level":2},{"name":"narG (K00370)","level":2},{"name":"narH (K00371)","level":2},{"name":"narI (K00374)","level":2},{"name":"napA (K02567)","level":2},{"name":"napB (K02568)","level":2},{"name":"nirK (K00368)","level":2},{"name":"nirS (K15864)","level":2},{"name":"norB (K04561)","level":2},{"name":"norC (K04562)","level":2},{"name":"nosZ (K00376)","level":2}],"links":[{"source":0,"target":3,"value":639.3},{"source":0,"target":4,"value":83.3},{"source":0,"target":5,"value":4864.0},{"source":0,"target":6,"value":3899.5},{"source":0,"target":7,"value":4590.4},{"source":1,"target":3,"value":713.0},{"source":1,"target":4,"value":1163.0},{"source":1,"target":5,"value":1654.7},{"source":1,"target":6,"value":1198.1},{"source":1,"target":7,"value":5072.9},{"source":2,"target":3,"value":701.0},{"source":2,"target":4,"value":1489.9},{"source":2,"target":5,"value":2760.2},{"source":2,"target":6,"value":2799.0},{"source":2,"target":7,"value":6514.1},{"source":3,"target":8,"value":189.6},{"source":3,"target":8,"value":222.1},{"source":3,"target":8,"value":219.6},{"source":3,"target":9,"value":222.8},{"source":3,"target":9,"value":236.7},{"source":3,"target":9,"value":242.1},{"source":3,"target":10,"value":226.8},{"source":3,"target":10,"value":254.3},{"source":3,"target":10,"value":239.3},{"source":4,"target":11,"value":19.1},{"source":4,"target":11,"value":239.4},{"source":4,"target":11,"value":286.8},{"source":4,"target":12,"value":19.1},{"source":4,"target":12,"value":239.4},{"source":4,"target":12,"value":286.8},{"source":4,"target":13,"value":33.1},{"source":4,"target":13,"value":505.4},{"source":4,"target":13,"value":683.2},{"source":4,"target":14,"value":11.9},{"source":4,"target":14,"value":178.8},{"source":4,"target":14,"value":233.2},{"source":5,"target":15,"value":499.5},{"source":5,"target":15,"value":149.5},{"source":5,"target":15,"value":290.8},{"source":5,"target":16,"value":4364.4},{"source":5,"target":16,"value":1505.3},{"source":5,"target":16,"value":2469.4},{"source":6,"target":17,"value":1321.0},{"source":6,"target":17,"value":370.8},{"source":6,"target":17,"value":1136.6},{"source":6,"target":18,"value":1299.2},{"source":6,"target":18,"value":351.3},{"source":6,"target":18,"value":1050.8},{"source":6,"target":19,"value":1273.7},{"source":6,"target":19,"value":246.7},{"source":6,"target":19,"value":465.1},{"source":6,"target":20,"value":2.7},{"source":6,"target":20,"value":127.6},{"source":6,"target":20,"value":88.3},{"source":6,"target":21,"value":2.7},{"source":6,"target":21,"value":101.5},{"source":6,"target":21,"value":58.2},{"source":7,"target":22,"value":947.4},{"source":7,"target":22,"value":1279.8},{"source":7,"target":22,"value":1618.7},{"source":7,"target":23,"value":5.8},{"source":7,"target":23,"value":32.0},{"source":7,"target":23,"value":44.3},{"source":7,"target":24,"value":468.5},{"source":7,"target":24,"value":408.7},{"source":7,"target":24,"value":411.6},{"source":7,"target":25,"value":1927.5},{"source":7,"target":25,"value":2250.2},{"source":7,"target":25,"value":2894.7},{"source":7,"target":26,"value":1241.2},{"source":7,"target":26,"value":1102.1},{"source":7,"target":26,"value":1544.7}]},"carbon":{"nodes":[{"name":"Carignan","level":0},{"name":"Cinsault","level":0},{"name":"Ramsey","level":0},{"name":"Fijación C (Calvin)","level":1},{"name":"Metanotrofía","level":1},{"name":"PRK (K00855)","level":2},{"name":"rbcL (K01601)","level":2},{"name":"rbcS (K01602)","level":2},{"name":"pmoA (K16157)","level":2},{"name":"pmoB (K16158)","level":2},{"name":"pmoC (K16159)","level":2}],"links":[{"source":0,"target":3,"value":1680.6},{"source":0,"target":4,"value":14.4},{"source":1,"target":3,"value":1737.2},{"source":2,"target":3,"value":1892.7},{"source":3,"target":5,"value":523.1},{"source":3,"target":5,"value":536.2},{"source":3,"target":5,"value":724.2},{"source":3,"target":6,"value":781.4},{"source":3,"target":6,"value":781.5},{"source":3,"target":6,"value":913.2},{"source":3,"target":7,"value":376.0},{"source":3,"target":7,"value":419.6},{"source":3,"target":7,"value":255.3},{"source":4,"target":8,"value":4.8},{"source":4,"target":9,"value":4.8},{"source":4,"target":10,"value":4.8}]},"sulfur":{"nodes":[{"name":"Carignan","level":0},{"name":"Cinsault","level":0},{"name":"Ramsey","level":0},{"name":"Red. asim. SO₄²⁻","level":1},{"name":"Oxidación Sox","level":1},{"name":"sat (K00958)","level":2},{"name":"cysC (K00860)","level":2},{"name":"cysH (K00390)","level":2},{"name":"soxA (K17222)","level":2},{"name":"soxX (K17223)","level":2},{"name":"soxB (K17224)","level":2},{"name":"soxY (K17226)","level":2}],"links":[{"source":0,"target":3,"value":8664.4},{"source":0,"target":4,"value":2175.4},{"source":1,"target":3,"value":6993.3},{"source":1,"target":4,"value":2182.5},{"source":2,"target":3,"value":8789.8},{"source":2,"target":4,"value":2305.6},{"source":3,"target":5,"value":1503.7},{"source":3,"target":5,"value":933.0},{"source":3,"target":5,"value":1675.8},{"source":3,"target":6,"value":1263.7},{"source":3,"target":6,"value":915.1},{"source":3,"target":6,"value":1706.7},{"source":3,"target":7,"value":5897.1},{"source":3,"target":7,"value":5145.2},{"source":3,"target":7,"value":5407.4},{"source":4,"target":8,"value":533.8},{"source":4,"target":8,"value":420.4},{"source":4,"target":8,"value":493.4},{"source":4,"target":9,"value":469.5},{"source":4,"target":9,"value":348.2},{"source":4,"target":9,"value":419.1},{"source":4,"target":10,"value":341.6},{"source":4,"target":10,"value":227.2},{"source":4,"target":10,"value":108.2},{"source":4,"target":11,"value":830.6},{"source":4,"target":11,"value":1186.5},{"source":4,"target":11,"value":1284.8}]},"mega":{"nodes":[{"name":"Carignan"},{"name":"Cinsault"},{"name":"Ramsey"},{"name":"Ciclo Nitrógeno"},{"name":"Ciclo Carbono"},{"name":"Ciclo Azufre"},{"name":"Fijación N₂"},{"name":"Nitrificación"},{"name":"Red. asim. NO₃⁻"},{"name":"Red. disim. NO₃⁻"},{"name":"Desnitrificación"},{"name":"Fijación C (Calvin)"},{"name":"Metanotrofía"},{"name":"Red. asim. SO₄²⁻"},{"name":"Oxidación Sox"}],"links":[{"source":0,"target":3,"value":14076.4},{"source":0,"target":4,"value":1695.0},{"source":0,"target":5,"value":10839.8},{"source":1,"target":3,"value":9801.6},{"source":1,"target":4,"value":1737.2},{"source":1,"target":5,"value":9175.8},{"source":2,"target":3,"value":14264.2},{"source":2,"target":4,"value":1892.7},{"source":2,"target":5,"value":11095.5},{"source":3,"target":6,"value":692.7},{"source":3,"target":7,"value":1201.0},{"source":3,"target":8,"value":2926.6},{"source":3,"target":9,"value":2715.6},{"source":3,"target":10,"value":5953.2},{"source":4,"target":11,"value":1831.4},{"source":4,"target":12,"value":2.4},{"source":5,"target":13,"value":8469.5},{"source":5,"target":14,"value":2263.4}]}};
+
+const ttEl=document.getElementById('tt');
+function showTT(e,h){ttEl.innerHTML=h;ttEl.style.opacity=1;ttEl.style.left=Math.min(e.pageX+14,innerWidth-310)+'px';ttEl.style.top=(e.pageY-10)+'px';}
+function hideTT(){ttEl.style.opacity=0;}
+
+document.querySelectorAll('.nav-link').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.sec').forEach(x=>x.classList.remove('on'));
+  this.classList.add('on');
+  document.getElementById('sec-'+this.dataset.s).classList.add('on');
+  const s=this.dataset.s;
+  setTimeout(()=>{
+    if(s==='nitrogen') drawSankey('nitrogen','sk-nitrogen',700);
+    if(s==='carbon') drawSankey('carbon','sk-carbon',500);
+    if(s==='sulfur') drawSankey('sulfur','sk-sulfur',500);
+    if(s==='mega') drawSankey('mega','sk-mega',550);
+  },50);
+}));
+
+const nodeColors={
+  'Carignan':'#c4293c','Cinsault':'#2a7a5a','Ramsey':'#3a6ab0',
+  'Ciclo Nitrógeno':'#e8a030','Ciclo Carbono':'#2a7a5a','Ciclo Azufre':'#3a6ab0',
+  'Fijación N₂':'#2a7a5a','Nitrificación':'#e8a030',
+  'Red. asim. NO₃⁻':'#3a6ab0','Red. disim. NO₃⁻':'#c4293c','Desnitrificación':'#7a3a9a',
+  'Fijación C (Calvin)':'#2a7a5a','Metanotrofía':'#c4293c',
+  'Red. asim. SO₄²⁻':'#3a6ab0','Oxidación Sox':'#e8a030'
+};
+
+const koColors=['#5a8a4a','#d06070','#4aaa82','#1e4a72','#c08030','#a85088','#b05030',
+  '#dca050','#6a2050','#92b882','#e07050','#2090a0','#904080','#c0a020','#4070c0',
+  '#a06020','#30b080','#8060c0','#60a060','#b870d0'];
+
+function getNodeColor(name, idx){
+  if(nodeColors[name]) return nodeColors[name];
+  if(name.includes('(K')) return koColors[idx % koColors.length];
+  return '#8a96a8';
+}
+
+function drawSankey(key, elId, height){
+  const data=JSON.parse(JSON.stringify(SD[key]));
+  const el=document.getElementById(elId);el.innerHTML='';
+  const W=el.clientWidth||1000;
+  const H=height;
+  
+  const svg=d3.select(el).append('svg').attr('viewBox',`0 0 ${W} ${H}`).attr('width','100%');
+  
+  const sankey=d3.sankey()
+    .nodeId(d=>d.index)
+    .nodeAlign(d3.sankeyLeft)
+    .nodeWidth(18)
+    .nodePadding(key==='nitrogen'?10:14)
+    .extent([[1,10],[W-1,H-10]]);
+  
+  const {nodes,links}=sankey({
+    nodes:data.nodes.map((d,i)=>Object.assign({},d,{index:i})),
+    links:data.links.map(d=>Object.assign({},d))
+  });
+  
+  // Links
+  const link=svg.append('g').attr('fill','none').selectAll('g')
+    .data(links).join('g').attr('class','link');
+  
+  link.append('path')
+    .attr('d',d3.sankeyLinkHorizontal())
+    .attr('stroke',d=>getNodeColor(d.source.name, d.source.index))
+    .attr('stroke-width',d=>Math.max(1.5,d.width))
+    .attr('stroke-opacity',0.35)
+    .on('mouseover',function(e,d){
+      d3.select(this).attr('stroke-opacity',0.7);
+      showTT(e,`<b>${d.source.name} → ${d.target.name}</b><br>Abundancia: ${d.value.toLocaleString()}`);
+    })
+    .on('mouseout',function(){d3.select(this).attr('stroke-opacity',0.35);hideTT();});
+  
+  // Nodes
+  const node=svg.append('g').selectAll('g').data(nodes).join('g').attr('class','sankey-node');
+  
+  node.append('rect')
+    .attr('x',d=>d.x0).attr('y',d=>d.y0)
+    .attr('height',d=>Math.max(1,d.y1-d.y0)).attr('width',d=>d.x1-d.x0)
+    .attr('fill',d=>getNodeColor(d.name,d.index))
+    .attr('rx',3).attr('opacity',0.9)
+    .on('mouseover',function(e,d){
+      d3.select(this).attr('opacity',1);
+      const inV=d.targetLinks.reduce((a,l)=>a+l.value,0);
+      const outV=d.sourceLinks.reduce((a,l)=>a+l.value,0);
+      showTT(e,`<b>${d.name}</b><br>Entrada: ${inV.toLocaleString()}<br>Salida: ${outV.toLocaleString()}`);
+    })
+    .on('mouseout',function(){d3.select(this).attr('opacity',0.9);hideTT();});
+  
+  node.append('text')
+    .attr('x',d=>d.x0<W/2 ? d.x1+8 : d.x0-8)
+    .attr('y',d=>(d.y1+d.y0)/2)
+    .attr('dy','0.35em')
+    .attr('text-anchor',d=>d.x0<W/2?'start':'end')
+    .attr('font-size',key==='nitrogen'?'10px':'12px')
+    .text(d=>d.name);
+}
+
+// Init mega
+drawSankey('mega','sk-mega',550);
+</script>
+</body>
+</html>
